@@ -1,5 +1,5 @@
 name: "Demo APP Build"
-on:  push
+on:  [push,workflow_dispatch]
 env: 
   NETCORE_VERSION: '3.1.103'
   AZURE_WEBAPP_PACKAGE_PATH: './Published'
@@ -29,7 +29,7 @@ jobs:
       uses: azure/webapps-deploy@v2
       with:
         app-name: ${{ env.AZURE_WEBAPP_NAME }}
-        publish-profile: {{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
 
