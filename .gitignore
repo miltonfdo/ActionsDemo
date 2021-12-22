@@ -1,0 +1,7 @@
+#files to be ignore
+*.exe
+*.dll
+
+#paths to be ignores
+bin/
+obj/

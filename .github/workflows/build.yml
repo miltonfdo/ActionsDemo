@@ -1,0 +1,35 @@
+name: "Demo APP Build"
+on:  push
+env: 
+  NETCORE_VERSION: '3.1.103'
+  AZURE_WEBAPP_PACKAGE_PATH: './Published'
+  AZURE_WEBAPP_NAME: az-LunuxGitHubDemo
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Setup .NET ${{ env.NETCORE_VERSION }}
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: ${{ env.NETCORE_VERSION }}
+
+    - name: Restore dependencies
+      run: dotnet restore
+
+    - name: Build
+      run: dotnet build --no-restore -c Release
+
+    - name: Publish
+      run: dot net Publish --configuration Release --no-bulld --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+    
+    - name: Deploy to Azure webapp
+      uses: azure/webapps-deploy@v2
+      with:
+        app-name: ${{ env.AZURE_WEBAPP_NAME }}
+        publish-profile: {{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
+        package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+
+
