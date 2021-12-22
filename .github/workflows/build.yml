@@ -23,7 +23,7 @@ jobs:
       run: dotnet build --no-restore -c Release
 
     - name: Publish
-      run: dotnet Publish --configuration Release --no-bulld --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
+      run: dotnet publish --configuration Release --no-build --output ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
     
     - name: Deploy to Azure webapp
       uses: azure/webapps-deploy@v2
@@ -32,4 +32,9 @@ jobs:
         publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISH_PROFILE }}
         package: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
+    - name: Publish Artifacts
+      uses: actions/upload-artifact@v1.0.0
+      with:
+        name: webapp
+        path: ${{ env.AZURE_WEBAPP_PACKAGE_PATH }}
 
